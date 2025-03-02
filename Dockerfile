@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 python:3.12.5
+FROM --platform=linux/amd64 python:3.13.2
 
 workdir /src/app
 
