@@ -1,15 +1,18 @@
-FROM python:3.13-slim-bookworm@sha256:4c2cf9917bd1cbacc5e9b07320025bdb7cdf2df7b0ceaccb55e9dd7e30987419
+FROM python:3.13-slim-bookworm@sha256:9b8102b7b3a61db24fe58f335b526173e5aeaaf7d13b2fbfb514e20f84f5e386
+
+# System deps:
+RUN pip install poetry
 
 WORKDIR /src/app
 
-COPY ./requirements.txt .
+COPY pyproject.toml poetry.lock ./
+COPY static ./static
+COPY templates ./templates
 
-RUN ["pip", "install", "-r", "./requirements.txt"]
-
-COPY . .
+RUN poetry install
 
 EXPOSE 5000
 
 ENV FLASK_APP=/src/app/main.py
 
-CMD [ "python3", "-m" , "flask", "run", "--host=0.0.0.0"]
+ENTRYPOINT [ "poetry", "run", "python", "-m" , "flask", "run", "--host=0.0.0.0"]
