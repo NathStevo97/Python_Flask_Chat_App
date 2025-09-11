@@ -8,6 +8,7 @@ WORKDIR /src/app
 COPY pyproject.toml poetry.lock ./
 COPY static ./static
 COPY templates ./templates
+COPY main.py ./main.py
 
 RUN poetry install
 
