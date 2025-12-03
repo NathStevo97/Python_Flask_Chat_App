@@ -1,4 +1,4 @@
-# Python_Flask_Chat_App
+# Python Flask Chat App
 
 This is a simple python application made for my own personal development
 The app was made following the tutorial described here: <insert link>
