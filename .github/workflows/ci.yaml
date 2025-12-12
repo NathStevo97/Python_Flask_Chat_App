@@ -49,10 +49,13 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.13"
-      - name: Install dependencies
+      - name: Install pylint
         run: |
           python -m pip install --upgrade pip
           pip install pylint
+      - name: Install pyproject.toml dependencies
+        run: |
+          if [ -f "pyproject.toml" ]; then pip install poetry && poetry install; fi
       - name: Analysing the code with pylint
         run: |
           pylint $(git ls-files '*.py')
