@@ -1,11 +1,19 @@
-name: flake8 Lint
+name: CI
 
 on: [push, pull_request]
 
 jobs:
-  flake8-lint:
+
+  code-quality:
+
+    defaults:
+      run:
+        shell: bash
+
     runs-on: ubuntu-latest
-    name: Lint
+
+    name: flake8 Lint
+
     steps:
       - name: Check out source repository
         uses: actions/checkout@v4
@@ -15,3 +23,24 @@ jobs:
           python-version: "3.13"
       - name: flake8 Lint
         uses: py-actions/flake8@v2
+      - name: black formatting check
+        uses: psf/black@stable
+        with:
+          options: --check .
+
+  security-scan:
+    runs-on: ubuntu-latest
+    name: Trivy Filesystem Scan
+    needs: code-quality
+    steps:
+      - name: Check out source repository
+        uses: actions/checkout@v4
+      - name: Run Trivy filesystem scan
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: fs
+          format: table
+          exit-code: '1'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
