@@ -1,3 +1,7 @@
+"""
+Docstring for main
+"""
+
 import os
 import random
 from string import ascii_uppercase
@@ -15,6 +19,11 @@ rooms = {}
 
 
 def generate_unique_code(length):
+    """
+    Docstring for generate_unique_code
+
+    :param length: Description
+    """
     while True:
         code = ""
         for _ in range(length):
@@ -28,6 +37,9 @@ def generate_unique_code(length):
 
 @app.route("/", methods=["POST", "GET"])
 def home():
+    """
+    Docstring for home
+    """
     session.clear()
     if request.method == "POST":
         name = request.form.get("name")
@@ -63,6 +75,9 @@ def home():
 
 @app.route("/room")
 def room():
+    """
+    Docstring for room
+    """
     room = session.get("room")
     if room is None or session.get("name") is None or room not in rooms:
         return redirect(url_for("home"))
@@ -72,6 +87,11 @@ def room():
 
 @socketio.on("message")
 def message(data):
+    """
+    Docstring for message
+
+    :param data: Description
+    """
     room = session.get("room")
     if room not in rooms:
         return
@@ -85,6 +105,11 @@ def message(data):
 
 @socketio.on("connect")
 def connect(auth):
+    """
+    Docstring for connect
+
+    :param auth: Description
+    """
     room = session.get("room")
     name = session.get("name")
     if not room or not name:
@@ -101,6 +126,9 @@ def connect(auth):
 
 @socketio.on("disconnect")
 def disconnect():
+    """
+    Docstring for disconnect
+    """
     room = session.get("room")
     name = session.get("name")
     leave_room(room)
@@ -115,4 +143,6 @@ def disconnect():
 
 
 if __name__ == "__main__":
+    """
+    Docstring for main"""
     socketio.run(app, port=5000, host="0.0.0.0")
