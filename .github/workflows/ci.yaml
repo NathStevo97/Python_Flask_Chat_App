@@ -49,10 +49,13 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.13"
-      - name: pylint Lint
-        uses: wearerequired/lint-action@v2
-        with:
-          linter: pylint
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pylint
+      - name: Analysing the code with pylint
+        run: |
+          pylint $(git ls-files '*.py')
 
   security-scan:
     runs-on: ubuntu-latest
