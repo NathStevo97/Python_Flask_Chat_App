@@ -39,10 +39,25 @@ jobs:
         with:
           options: --check .
 
+  code-quality-pylint:
+    runs-on: ubuntu-latest
+    name: Pylint
+    steps:
+      - name: Check out source repository
+        uses: actions/checkout@v4
+      - name: Set up Python environment
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: pylint Lint
+        uses: wearerequired/lint-action@v2
+        with:
+          linter: pylint
+
   security-scan:
     runs-on: ubuntu-latest
     name: Trivy Filesystem Scan
-    needs: [code-quality-flake8, code-quality-black-fmt]
+    needs: [code-quality-flake8, code-quality-black-fmt, code-quality-pylint]
     steps:
       - name: Check out source repository
         uses: actions/checkout@v4
