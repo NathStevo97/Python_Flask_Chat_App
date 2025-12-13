@@ -96,12 +96,12 @@ jobs:
     - name: Docker Build - Flask-Chat
       id: build-image
       run: |
-        docker build -t docker.io/${{ secrets.DOCKERHUB_USERNAME }}/flask-ckat:latest .
+        docker build -t docker.io/${{ secrets.DOCKERHUB_USERNAME }}/flask-chat:latest .
 
-    - name: Run Trivy - Solr
+    - name: Run Trivy - Flask-Chat
       uses: aquasecurity/trivy-action@0.33.1
       with:
-        image-ref: 'docker.io/${{ secrets.DOCKERHUB_USERNAME }}/flask-ckat:latest'
+        image-ref: 'docker.io/${{ secrets.DOCKERHUB_USERNAME }}/flask-chat:latest'
         format: 'table'
         exit-code: '1'
         ignore-unfixed: true
@@ -111,4 +111,4 @@ jobs:
     - name: Docker Push - Flask-Chat
       id: push-flask-chat
       run: |
-        docker image push docker.io/${{ secrets.DOCKERHUB_USERNAME }}/flask-chat:latest
+        docker push docker.io/${{ secrets.DOCKERHUB_USERNAME }}/flask-chat:latest
