@@ -78,11 +78,13 @@ def room():
     """
     Docstring for room
     """
-    room = session.get("room")
-    if room is None or session.get("name") is None or room not in rooms:
+    room_id = session.get("room")
+    if room_id is None or session.get("name") is None or room_id not in rooms:
         return redirect(url_for("home"))
 
-    return render_template("room.html", code=room, messages=rooms[room]["messages"])
+    return render_template(
+        "room.html", code=room_id, messages=rooms[room_id]["messages"]
+    )
 
 
 @socketio.on("message")
@@ -143,6 +145,4 @@ def disconnect():
 
 
 if __name__ == "__main__":
-    """
-    Docstring for main"""
     socketio.run(app, port=5000, host="0.0.0.0")
