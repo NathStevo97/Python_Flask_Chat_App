@@ -16,9 +16,9 @@ jobs:
 
     steps:
       - name: Check out source repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Set up Python environment
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.14"
       - name: flake8 Lint
@@ -29,9 +29,9 @@ jobs:
     name: Black Formatting Check
     steps:
       - name: Check out source repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Set up Python environment
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.14"
       - name: black formatting check
@@ -44,9 +44,9 @@ jobs:
     name: Pylint
     steps:
       - name: Check out source repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Set up Python environment
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.14"
       - name: Install pyproject.toml dependencies
@@ -62,7 +62,7 @@ jobs:
     needs: [code-quality-flake8, code-quality-black-fmt, code-quality-pylint]
     steps:
       - name: Check out source repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Run Trivy filesystem scan
         uses: aquasecurity/trivy-action@master
         with:
