@@ -56,7 +56,7 @@ jobs:
         run: |
           poetry run pylint $(git ls-files '*.py')
 
-  security-scan:
+  file-security-scan:
     runs-on: ubuntu-latest
     name: Trivy Filesystem Scan
     needs: [code-quality-flake8, code-quality-black-fmt, code-quality-pylint]
@@ -72,3 +72,44 @@ jobs:
           ignore-unfixed: true
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
+
+  image-build-and-scan:
+    defaults:
+      run:
+        shell: bash
+
+    if: ${{ always() }}
+    needs: security-scan
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Chekout the Repo
+      uses: actions/checkout@v6
+
+    - name: Login to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+    - name: Docker Build - Flask-Chat
+      id: build-image
+      run: |
+        docker build -t docker.io/${{ secrets.DOCKERHUB_USERNAME }}/flask-ckat:latest .
+
+    - name: Run Trivy - Solr
+      uses: aquasecurity/trivy-action@0.33.1
+      with:
+        image-ref: 'docker.io/${{ secrets.DOCKERHUB_USERNAME }}/flask-ckat:latest'
+        format: 'table'
+        exit-code: '1'
+        ignore-unfixed: true
+        vuln-type: 'os,library'
+        severity: 'CRITICAL,HIGH'
+        trivyignores: '.trivyignore'
+
+    - name: Docker Push - Flask-Chat
+      id: push-solr
+      run: |
+        docker image push docker.io/${{ secrets.DOCKERHUB_USERNAME }}/flask-chat:latest

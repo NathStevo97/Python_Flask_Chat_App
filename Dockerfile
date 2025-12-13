@@ -17,7 +17,7 @@ COPY static ./static
 COPY templates ./templates
 
 # Copy app files
-COPY main.py ./main.py
+COPY *.py ./*.py
 
 # Install project dependencies
 RUN poetry install
