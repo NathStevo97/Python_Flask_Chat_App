@@ -1,4 +1,5 @@
 """Utility functions for the application."""
+
 import random
 from string import ascii_uppercase
 from models import rooms

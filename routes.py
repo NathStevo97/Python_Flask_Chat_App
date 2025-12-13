@@ -1,4 +1,5 @@
 """Routes for the Flask application."""
+
 from flask import Blueprint, render_template, request, session, redirect, url_for
 from utils import generate_unique_code
 from models import rooms

@@ -79,7 +79,7 @@ jobs:
         shell: bash
 
     if: ${{ always() }}
-    needs: file-security-scan
+    needs: [code-quality-flake8, code-quality-black-fmt, file-security-scan]
 
     runs-on: ubuntu-latest
 
